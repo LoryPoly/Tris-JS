@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Tris in Javascript</title>
+		<link href="Tris.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		<table border="1">
+			<script type="text/javascript">
+
+				var turno = 0;// variabile per contenere il numero di turni trascorsi
+				var isPlayerOne = true;//variabile per determinare se è il turno del giocatore 1 o del giocatore 2
+				var isEnded = false;//variabile per determinare se il gioco è finito o no
+
+				for(var i = 0; i < 3; i++) {//creazione tabella
+					document.write("<tr>");
+					for (var z = 0; z < 3; z++) {
+						document.write("<td id=" + (z+(i*3)) + " onclick='input("+ (z+(i*3)) +");'></td>");
+					}
+					document.write("</tr>");
+				}
+
+				function input(i) {//funzione per determinare l'input
+					if(isEnded) return;
+					if (getValue(i) != "X" && getValue(i) != "O") {
+						if(isPlayerOne) {
+							getInfo(i).className = "X";
+							getInfo(i).innerHTML = "X";
+						} else {
+							getInfo(i).className = "O";
+							getInfo(i).innerHTML = "O";
+						}
+						isPlayerOne = !isPlayerOne;
+						turno++;
+						victoryCheck();
+					} else {
+						alert("Non è possibile scegliere la casella!");
+					}
+				}
+
+				function getInfo(i) { return document.getElementById(i);}
+				
+				function getValue(i) {return document.getElementById(i).innerHTML;}
+
+				function reset() {// funzione per resettare i valori
+					for(var i = 0; i < 9; i++) getInfo(i).innerHTML = "";
+					turno = 0;
+					isPlayerOne = true;
+					isEnded = false;
+				}
+
+				function victory(info) {//funzione per determinare la vittoria
+					if(info == 'X') {
+						alert("Ha vinto il Giocatore 1!");
+					} else {
+						alert("Ha vinto il Giocatore 2!");
+					}
+					isEnded = true;
+				}
+
+				function victoryCheck() {//controllo per la vittoria
+					if (getValue(0) == getValue(1) && getValue(1) == getValue(2) && getValue(2) != '') victory(getValue(0));
+					else if (getValue(3) == getValue(4) && getValue(4) == getValue(5) && getValue(5) != '') victory(getValue(3));
+					else if (getValue(6) == getValue(7) && getValue(7) == getValue(8) && getValue(8) != '') victory(getValue(6));
+					else if (getValue(0) == getValue(3) && getValue(3) == getValue(6) && getValue(6) != '') victory(getValue(0));
+					else if (getValue(1) == getValue(4) && getValue(4) == getValue(7) && getValue(7) != '') victory(getValue(1));
+					else if (getValue(2) == getValue(5) && getValue(5) == getValue(8) && getValue(8) != '') victory(getValue(2));
+					else if (getValue(0) == getValue(4) && getValue(4) == getValue(8) && getValue(8) != '') victory(getValue(0));
+					else if (getValue(2) == getValue(4) && getValue(4) == getValue(6) && getValue(6) != '') victory(getValue(2));
+					else if(turno == 9) {
+						alert("Nessuno ha vinto :(");
+						isEnded = true;
+					}
+				}
+			</script>
+		</table>
+		<div align="center">
+			<br><input type="button" class="button" value="Resetta" onclick="reset();">
+		</div>
+		
+	</body>
+</html>
